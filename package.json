@@ -5,6 +5,7 @@
     "dependencies": {
         "antd": "^3.3.3",
         "axios": "^0.18.0",
+        "moment": "^2.22.0",
         "react": "^16.2.0",
         "react-dom": "^16.2.0",
         "react-redux": "^5.0.7",
@@ -28,7 +29,9 @@
             "target": "http://dev.sis.1gai.cn/",
             "secure": false,
             "changeOrigin": true,
-            "pathRewrite": { "^/api": "/api" }
+            "pathRewrite": {
+                "^/api": "/api"
+            }
         }
     }
 }

@@ -1,13 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
-import App from "./App";
 import Home from "./app/home/App";
 import Login from "./app/login/App";
-import ClassRoom from "./app/home/App";
 import {
     BrowserRouter as Router,
-    HashRouter,
+    // HashRouter,
     Route,
     Switch
 } from "react-router-dom";

@@ -4,6 +4,7 @@ import "./App.css";
 import { Form, Icon, Input, Button } from "antd";
 import { Redirect } from "react-router-dom";
 import currentUser from "../../state/fakeAuth";
+import net from "../../services/netService";
 
 const FormItem = Form.Item;
 
@@ -21,7 +22,7 @@ class HorizontalLoginForm extends React.Component {
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 console.log("Received values of form: ", values);
-                currentUser
+                net
                     .login(values)
                     .then(data => {
                         this.props.history.push("/");
@@ -121,7 +122,6 @@ class App extends Component {
     }
 
     render() {
-        console.log(currentUser);
         if (currentUser.state.isAuthenticated) {
             return <Redirect to={{ pathname: "/" }} />;
         }
@@ -140,19 +140,19 @@ class App extends Component {
     }
 
     componentDidMount() {
-        this._timer = setInterval(
-            (n => {
-                return () => {
-                    this.setState({ num: --n });
-                    if (n <= 0) {
-                        // this.props.history.push("/");
-                        window.clearInterval(this._timer);
-                        this._timer = null;
-                    }
-                };
-            })(this.state.num),
-            1000
-        );
+        // this._timer = setInterval(
+        //     (n => {
+        //         return () => {
+        //             this.setState({ num: --n });
+        //             if (n <= 0) {
+        //                 // this.props.history.push("/");
+        //                 window.clearInterval(this._timer);
+        //                 this._timer = null;
+        //             }
+        //         };
+        //     })(this.state.num),
+        //     1000
+        // );
     }
 
     componentWillUnmount() {

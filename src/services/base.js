@@ -13,9 +13,17 @@ NetApi.interceptors.response.use(
         let data = response.data;
         if (data.state === 0) {
             return data;
-        } else {
-            return Promise.reject(data);
         }
+
+        if (data.state === 999901) {
+            // no auth
+        }
+
+        if (data.state === 999902) {
+            // no permission
+        }
+
+        return Promise.reject(data);
     },
     err => {
         return Promise.reject(err);
