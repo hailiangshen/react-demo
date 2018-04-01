@@ -1,18 +1,29 @@
 import React, { Component } from "react";
 // import { lifecycle } from "react-router";
-import { Route, Link, Switch } from "react-router-dom";
+import { Route, Link, Switch, Redirect } from "react-router-dom";
 import ClassRoom from "../classRoom/App";
 import Student from "../student/App";
 import OtherClassRoom from "../otherClassRoom/App";
 import MyStudent from "../myStudent/App";
+import PageNotFound from "../404/App";
 import "./App.css";
 import { Layout, Menu, Breadcrumb, Icon } from "antd";
+import currentUser from "../../state/fakeAuth";
 const { SubMenu } = Menu;
-const { Header, Content, Sider, Footer } = Layout;
+const { Header, Content, Sider } = Layout;
+
+const requireAuth = (nextState, replace, next) => {
+    console.log("requireAuth");
+    if (!currentUser.isAuthenticated) {
+        replace({ pathname: "/login" }); // 路由转发
+    }
+    next();
+};
 
 class App extends Component {
     state = {
-        collapsed: false
+        collapsed: false,
+        currentUser: currentUser.state
     };
     // onCollapse = collapsed => {
     //     this.setState({ collapsed });
@@ -24,6 +35,16 @@ class App extends Component {
         console.log(key);
     };
     render() {
+        if (!currentUser.state.isAuthenticated) {
+            return (
+                <Redirect
+                    to={{
+                        pathname: "/login",
+                        state: { from: this.props.location }
+                    }}
+                />
+            );
+        }
         return (
             <Layout>
                 <Sider
@@ -33,7 +54,10 @@ class App extends Component {
                     // onCollapse={this.onCollapse}
                     width={200}
                 >
-                    <div className="logo" />
+                    <div
+                        className="logo"
+                        data-text={this.state.currentUser.displayName || "Logo"}
+                    />
                     <Menu
                         mode="inline"
                         theme="dark"
@@ -52,12 +76,12 @@ class App extends Component {
                             }
                         >
                             <Menu.Item key="adminClass">
-                                <Link to="classRoom">
+                                <Link to="/classRoom">
                                     <span className="nav-text">行政班</span>
                                 </Link>
                             </Menu.Item>
                             <Menu.Item key="otherClass">
-                                <Link to="otherClassRoom">
+                                <Link to="/otherClassRoom">
                                     <span className="nav-text">选修班</span>
                                 </Link>
                             </Menu.Item>
@@ -72,12 +96,12 @@ class App extends Component {
                             }
                         >
                             <Menu.Item key="myStudent">
-                                <Link to="myStudent">
+                                <Link to="/myStudent">
                                     <span className="nav-text">我的学生</span>
                                 </Link>
                             </Menu.Item>
                             <Menu.Item key="student">
-                                <Link to="student">
+                                <Link to="/student">
                                     <span className="nav-text">全部学生</span>
                                 </Link>
                             </Menu.Item>
@@ -140,26 +164,33 @@ class App extends Component {
                                 minHeight: 280
                             }}
                         >
-                            {this.props.children}
                             <Switch>
-                                <div>
-                                    <Route
-                                        path="/classRoom"
-                                        component={ClassRoom}
-                                    />
-                                    <Route
-                                        path="/otherClassRoom"
-                                        component={OtherClassRoom}
-                                    />
-                                    <Route
-                                        path="/student"
-                                        component={Student}
-                                    />
-                                    <Route
-                                        path="/myStudent"
-                                        component={MyStudent}
-                                    />
-                                </div>
+                                <Route
+                                    path="/"
+                                    exact
+                                    render={() => <h1>哈哈哈哈哈哈！</h1>}
+                                />
+                                <Route
+                                    path="/classRoom"
+                                    component={ClassRoom}
+                                    onEnter={requireAuth}
+                                />
+                                <Route
+                                    path="/otherClassRoom"
+                                    component={OtherClassRoom}
+                                    onEnter={requireAuth}
+                                />
+                                <Route
+                                    path="/student"
+                                    component={Student}
+                                    onEnter={requireAuth}
+                                />
+                                <Route
+                                    path="/myStudent"
+                                    component={MyStudent}
+                                    onEnter={requireAuth}
+                                />
+                                <Route component={PageNotFound} />
                             </Switch>
                         </Content>
                     </Layout>
