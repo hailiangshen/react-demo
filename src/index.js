@@ -11,6 +11,8 @@ import {
     Route,
     Switch
 } from "react-router-dom";
+import net from "./services/netService";
+import currentUser from "./state/fakeAuth";
 import registerServiceWorker from "./registerServiceWorker";
 
 // ReactDOM.render(<App />, document.getElementById("root"));
@@ -35,13 +37,17 @@ import registerServiceWorker from "./registerServiceWorker";
 //     document.getElementById("root")
 // );
 
-ReactDOM.render(
-    <Router>
-        <Home>
-            <Route path="/" exact component={Login} />
-        </Home>
-    </Router>,
-    document.getElementById("root")
-);
+net.getCurrentUser().then(data => {
+    currentUser.setState(data.data);
+    ReactDOM.render(
+        <Router>
+            <Switch>
+                <Route path="/login" component={Login} />
+                <Route path="/" component={Home} />
+            </Switch>
+        </Router>,
+        document.getElementById("root")
+    );
+});
 
 registerServiceWorker();
