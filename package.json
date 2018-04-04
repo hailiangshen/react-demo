@@ -25,6 +25,14 @@
         "react-app-rewired": "^1.5.0"
     },
     "proxy": {
+        "/api/java/": {
+            "target": "http://localhost:9000/",
+            "secure": false,
+            "changeOrigin": true,
+            "pathRewrite": {
+                "^/api/java": ""
+            }
+        },
         "/api/": {
             "target": "http://dev.sis.1gai.cn/",
             "secure": false,

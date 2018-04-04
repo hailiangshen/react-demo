@@ -29,7 +29,10 @@ class App extends Component {
     //     this.setState({ collapsed });
     // };
     toggle = () => {
-        this.setState({ collapsed: !this.state.collapsed });
+        this.setState({ collapsed: !this.state.collapsed }, (nextState) => {
+
+
+         });
     };
     onSelect = ({ item, key, selectedKeys }) => {
         console.log(key);

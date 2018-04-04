@@ -10,6 +10,8 @@ import {
     Switch
 } from "react-router-dom";
 import net from "./services/netService";
+import javaNet from './services/javaNetServices';
+import { axios} from './services/base';
 import currentUser from "./state/fakeAuth";
 import registerServiceWorker from "./registerServiceWorker";
 
@@ -47,5 +49,19 @@ net.getCurrentUser().then(data => {
         document.getElementById("root")
     );
 });
+
+// javaNet.test().then(data => {
+//     console.log('Java 接口测试', data);
+// }).catch(err => {
+//     console.error(err);
+// })
+
+axios.get('http://localhost:9000/state/1', {
+    withCredentials: true
+}).then(data => {
+    console.log(data);
+}).catch(err => {
+    console.error(err);
+})
 
 registerServiceWorker();
