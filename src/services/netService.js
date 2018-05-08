@@ -5,6 +5,10 @@ class Net {
         return NetApi.get("/api/MemberShip/GetCurrentUser");
     };
 
+    logout = () => {
+        return NetApi.post("/api/MemberShip/logout");
+    };
+
     login = ({ userName, password }) => {
         return NetApi({
             url: "/api/MemberShip/Login",

@@ -8,13 +8,15 @@ import MyStudent from "../myStudent/App";
 import PageNotFound from "../404/App";
 import "./App.css";
 import { Layout, Menu, Breadcrumb, Icon } from "antd";
-import currentUser from "../../state/fakeAuth";
+import store from "../../state/store";
+import * as actionsTypes from "../../state/actionTypes";
+import net from "../../services/netService";
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
 
 const requireAuth = (nextState, replace, next) => {
     console.log("requireAuth");
-    if (!currentUser.isAuthenticated) {
+    if (!store.getState().currentUser.isAuthenticated) {
         replace({ pathname: "/login" }); // 路由转发
     }
     next();
@@ -23,22 +25,28 @@ const requireAuth = (nextState, replace, next) => {
 class App extends Component {
     state = {
         collapsed: false,
-        currentUser: currentUser.state
+        currentUser: store.getState().currentUser
     };
     // onCollapse = collapsed => {
     //     this.setState({ collapsed });
     // };
     toggle = () => {
-        this.setState({ collapsed: !this.state.collapsed }, (nextState) => {
-
-
-         });
+        this.setState({ collapsed: !this.state.collapsed }, nextState => {});
     };
     onSelect = ({ item, key, selectedKeys }) => {
         console.log(key);
     };
+    logout = () => {
+        net.logout().then(() => {
+            store.dispatch({
+                type: actionsTypes.SET_CURRENT_USER,
+                data: null
+            });
+            this.props.history.push("/login");
+        });
+    };
     render() {
-        if (!currentUser.state.isAuthenticated) {
+        if (!this.state.currentUser.isAuthenticated) {
             return (
                 <Redirect
                     to={{
@@ -150,6 +158,12 @@ class App extends Component {
                                     : "menu-fold"
                             }
                             onClick={this.toggle}
+                        />
+                        <Icon
+                            className="trigger logout"
+                            type="logout"
+                            title="logout"
+                            onClick={this.logout}
                         />
                     </Header>
 

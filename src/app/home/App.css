@@ -26,3 +26,6 @@
     text-align: center;
     overflow: hidden;
 }
+.logout {
+    float: right;
+}

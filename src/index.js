@@ -11,7 +11,7 @@ import Login from "./app/login/App";
  *      react-router-native：react-native环境所需的特定组件。
  *
  * Router
- *      BrowserRouter：html5Mode，需要服务器支持
+ *      BrowserRouter：html5Mode，需要服务端支持
  *      HashRouter：hash，适用与静态网站
  *
  */
@@ -22,30 +22,12 @@ import { axios } from "./services/base";
 import currentUser from "./state/fakeAuth";
 import registerServiceWorker from "./registerServiceWorker";
 
-// ReactDOM.render(<App />, document.getElementById("root"));
-
-// ReactDOM.render(
-//     <Router>
-//         <Switch>
-//             <Route path="/" component={Home} />
-//             <Route path="/login" component={Login} />
-//         </Switch>
-//     </Router>,
-//     document.getElementById("root")
-// );
-
-// ReactDOM.render(
-//     <Router>
-//         <Route path="/" component={Home}>
-//             <Route path="classRoom" component={ClassRoom} />
-//             <Route path="login" component={Login} />
-//         </Route>
-//     </Router>,
-//     document.getElementById("root")
-// );
+import store from "./state/store";
+import * as actionsTypes from "./state/actionTypes";
 
 net.getCurrentUser().then(data => {
-    currentUser.setState(data.data);
+    store.dispatch({ type: actionsTypes.SET_CURRENT_USER, data: data.data });
+    // currentUser.setState(data.data);
     ReactDOM.render(
         <BrowserRouter>
             <Switch>

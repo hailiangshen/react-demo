@@ -3,8 +3,8 @@ import logo from "./logo.svg";
 import "./App.css";
 import { Form, Icon, Input, Button } from "antd";
 import { Redirect } from "react-router-dom";
-import currentUser from "../../state/fakeAuth";
 import net from "../../services/netService";
+import store from "../../state/store";
 
 const FormItem = Form.Item;
 
@@ -122,7 +122,7 @@ class App extends Component {
     }
 
     render() {
-        if (currentUser.state.isAuthenticated) {
+        if (store.getState().currentUser.isAuthenticated) {
             return <Redirect to={{ pathname: "/" }} />;
         }
         return (
