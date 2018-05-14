@@ -39,7 +39,7 @@ class App extends Component {
     logout = () => {
         net.logout().then(() => {
             store.dispatch({
-                type: actionsTypes.SET_CURRENT_USER,
+                type: actionsTypes.CLEAR_CURRENT_USER,
                 data: null
             });
             this.props.history.push("/login");

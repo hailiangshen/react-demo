@@ -26,12 +26,8 @@ class Net {
      *
      * @memberof Net
      */
-    queryClasses = ({ schoolId, queryClassType, page }) => {
-        return NetApi.post("/api/EducationalAdministration/QueryClasses", {
-            schoolId,
-            queryClassType,
-            page
-        });
+    queryClasses = (data) => {
+        return NetApi.post("/api/EducationalAdministration/QueryClasses", data);
     };
 
     getClassDetails = id => {

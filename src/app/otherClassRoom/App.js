@@ -114,7 +114,7 @@ class ClassRoom extends Component {
         //this.props.match.url
         return net
             .queryClasses({
-                schoolId: 38,
+                schoolId: 26,
                 queryClassType: 4,
                 page: {
                     pageIndex: this.state.pagination.current,

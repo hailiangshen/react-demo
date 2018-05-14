@@ -112,32 +112,41 @@ class ClassRoom extends Component {
             loading: true
         });
         //this.props.match.url
-        return net
-            .queryClasses({
-                schoolId: 38,
-                queryClassType: 3,
-                page: {
-                    pageIndex: this.state.pagination.current,
-                    pageSize: this.state.pagination.pageSize
-                }
-            })
-            .then(data => {
-                this.setState(prevState => {
-                    return {
-                        loading: false,
-                        classList: data.data.list,
-                        pagination: {
-                            ...prevState.pagination,
-                            total: data.data.totalCount
-                        }
-                    };
-                });
-            })
-            .catch(err => {
-                this.setState({
-                    loading: false
-                });
+        return net.queryClasses({
+            "queryClassType": 3,
+            "page": {
+                "pageSize": this.state.pagination.pageSize,
+                "pageIndex": this.state.pagination.current
+            },
+            "schoolId": 26,
+            "grade": 0,
+            "classType": 0,
+            "classLabelId": 0,
+            "openEnroll": 0,
+            "enrollState": 0,
+            "openDateBegin": "",
+            "openDateEnd": "",
+            "closeDateBegin": "",
+            "closeDateEnd": "",
+            "key": "",
+            "classState": 0
+        }).then(data => {
+            this.setState(prevState => {
+                return {
+                    loading: false,
+                    classList: data.data.list,
+                    pagination: {
+                        ...prevState.pagination,
+                        total: data.data.totalCount
+                    }
+                };
             });
+        })
+        .catch(err => {
+            this.setState({
+                loading: false
+            });
+        });
     };
 
     onRow = record => {

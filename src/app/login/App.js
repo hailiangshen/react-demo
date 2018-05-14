@@ -2,9 +2,10 @@ import React, { Component } from "react";
 import logo from "./logo.svg";
 import "./App.css";
 import { Form, Icon, Input, Button } from "antd";
-import { Redirect } from "react-router-dom";
+import { Redirect, withRouter } from "react-router-dom";
 import net from "../../services/netService";
 import store from "../../state/store";
+import * as actionsTypes from "../../state/actionTypes";
 
 const FormItem = Form.Item;
 
@@ -19,17 +20,19 @@ class HorizontalLoginForm extends React.Component {
     }
     handleSubmit = e => {
         e.preventDefault();
+        // return this.props.history.push("/");;
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 console.log("Received values of form: ", values);
-                net
-                    .login(values)
-                    .then(data => {
+                net.login(values).then(data => {
+                    return net.getCurrentUser().then(data => {
+                        store.dispatch({ type: actionsTypes.SET_CURRENT_USER, data: data.data });
                         this.props.history.push("/");
-                    })
-                    .catch(err => {
-                        console.error(err);
                     });
+                })
+                .catch(err => {
+                    console.error(err);
+                });
             }
         });
     };
@@ -109,7 +112,7 @@ class HorizontalLoginForm extends React.Component {
     }
 }
 
-const WrappedHorizontalLoginForm = Form.create()(HorizontalLoginForm);
+const WrappedHorizontalLoginForm = Form.create()(withRouter(HorizontalLoginForm));
 
 class App extends Component {
     _timer;
@@ -140,26 +143,9 @@ class App extends Component {
     }
 
     componentDidMount() {
-        // this._timer = setInterval(
-        //     (n => {
-        //         return () => {
-        //             this.setState({ num: --n });
-        //             if (n <= 0) {
-        //                 // this.props.history.push("/");
-        //                 window.clearInterval(this._timer);
-        //                 this._timer = null;
-        //             }
-        //         };
-        //     })(this.state.num),
-        //     1000
-        // );
     }
 
     componentWillUnmount() {
-        if (this._timer) {
-            window.clearInterval(this._timer);
-            this._timer = null;
-        }
     }
 }
 
